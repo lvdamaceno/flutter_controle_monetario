@@ -5,31 +5,39 @@
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Minhas Dívidas"),
-          centerTitle: true,
-        ),
-        body: ListaLancamento(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-        ),
-      ),
-    ));
+void main() => runApp(to_liso_app());
+
+class to_liso_app extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(home: ListaLancamento());
+  }
+}
 
 class ListaLancamento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ListView(
-      padding: const EdgeInsets.all(8),
-      children: <Widget>[
-        ItemLancamento(new Lancamento(100, 'Rendimento')),
-        ItemLancamento(new Lancamento(-120, 'Farmácia')),
-        ItemLancamento(new Lancamento(-150, 'Almoço')),
-        ItemLancamento(new Lancamento(200, 'Rendimento')),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Minhas Dívidas"),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          ItemLancamento(new Lancamento(100, 'Rendimento')),
+          ItemLancamento(new Lancamento(-120, 'Farmácia')),
+          ItemLancamento(new Lancamento(-150, 'Almoço')),
+          ItemLancamento(new Lancamento(200, 'Rendimento')),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (){
+
+        },
+      ),
     );
   }
 }
