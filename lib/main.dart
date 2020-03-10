@@ -75,10 +75,20 @@ class Lancamento {
   final double valor;
   final String categoria;
 
+  @override
+  String toString() {
+    return 'Lancamento {valor: $valor, categoria: $categoria}';
+  }
+
   Lancamento(this.valor, this.categoria);
 }
 
 class FormLancamento extends StatelessWidget {
+  final TextEditingController _contraladorCampoValor = TextEditingController();
+  final TextEditingController _controladorCampoCategoria =
+      TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,19 +100,23 @@ class FormLancamento extends StatelessWidget {
           padding: const EdgeInsets.all(16.00),
           child: Column(children: <Widget>[
             TextFormField(
+              controller: _controladorCampoCategoria,
               style: TextStyle(
                 fontSize: 24.0,
               ),
               decoration: const InputDecoration(
+                icon: Icon(Icons.text_fields),
                 labelText: 'categoria',
                 hintText: 'Informe a despesa',
               ),
             ),
             TextFormField(
+              controller: _contraladorCampoValor,
               style: TextStyle(
                 fontSize: 24.0,
               ),
               decoration: const InputDecoration(
+                icon: Icon(Icons.monetization_on),
                 labelText: 'valor',
                 hintText: 'Informe o valor',
               ),
@@ -110,13 +124,21 @@ class FormLancamento extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.pop(context);
+                final double valor = double.parse(_contraladorCampoValor.text);
+                final String categoria = _controladorCampoCategoria.text;
+                final Lancamento lancamento = new Lancamento(valor, categoria);
+                debugPrint("Lançamento inserido");
+                debugPrint("$lancamento");
               },
-              child: Text('Inserir novo lançamento.',
-                style:
-                TextStyle(fontSize: 24.0,),),
+              child: Text(
+                'Inserir novo lançamento.',
+                style: TextStyle(
+                  fontSize: 24.0,
+                ),
+              ),
             ),
           ])),
+
     );
   }
 }
