@@ -34,8 +34,11 @@ class ListaLancamento extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: (){
-
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FormLancamento()),
+          );
         },
       ),
     );
@@ -73,4 +76,47 @@ class Lancamento {
   final String categoria;
 
   Lancamento(this.valor, this.categoria);
+}
+
+class FormLancamento extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Novo Lançamento"),
+        centerTitle: true,
+      ),
+      body: Padding(
+          padding: const EdgeInsets.all(16.00),
+          child: Column(children: <Widget>[
+            TextFormField(
+              style: TextStyle(
+                fontSize: 24.0,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'categoria',
+                hintText: 'Informe a despesa',
+              ),
+            ),
+            TextFormField(
+              style: TextStyle(
+                fontSize: 24.0,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'valor',
+                hintText: 'Informe o valor',
+              ),
+              keyboardType: TextInputType.numberWithOptions(),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Inserir novo lançamento.',
+                style:
+                TextStyle(fontSize: 24.0,),),
+            ),
+          ])),
+    );
+  }
 }
