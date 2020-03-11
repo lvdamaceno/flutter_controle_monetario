@@ -88,7 +88,6 @@ class FormLancamento extends StatelessWidget {
   final TextEditingController _controladorCampoCategoria =
       TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,36 +98,36 @@ class FormLancamento extends StatelessWidget {
       body: Padding(
           padding: const EdgeInsets.all(16.00),
           child: Column(children: <Widget>[
-            TextFormField(
-              controller: _controladorCampoCategoria,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: const InputDecoration(
-                icon: Icon(Icons.text_fields),
-                labelText: 'categoria',
-                hintText: 'Informe a despesa',
-              ),
+            CamposForm(
+              rotulo: 'Categoria',
+              dica: 'Exemplo: Almoço',
+              icone: Icons.create,
+              tipoTeclado: TextInputType.text,
+              controlador: _controladorCampoCategoria,
             ),
-            TextFormField(
-              controller: _contraladorCampoValor,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: const InputDecoration(
-                icon: Icon(Icons.monetization_on),
-                labelText: 'valor',
-                hintText: 'Informe o valor',
-              ),
-              keyboardType: TextInputType.numberWithOptions(),
+            CamposForm(
+              rotulo: 'Valor',
+              dica: '0.00',
+              icone: Icons.monetization_on,
+              tipoTeclado: TextInputType.text,
+              controlador: _contraladorCampoValor,
             ),
             RaisedButton(
               onPressed: () {
-                final double valor = double.parse(_contraladorCampoValor.text);
+                final double valor =
+                    double.tryParse(_contraladorCampoValor.text);
                 final String categoria = _controladorCampoCategoria.text;
                 final Lancamento lancamento = new Lancamento(valor, categoria);
-                debugPrint("Lançamento inserido");
-                debugPrint("$lancamento");
+                if (valor != null && categoria.isNotEmpty) {
+                  debugPrint("Lançamento inserido");
+                  debugPrint("$lancamento");
+                } else {
+                  debugPrint('Campo não preenchido');
+                  /*
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text('Preencha os dois campos!')));
+                  */
+                }
               },
               child: Text(
                 'Inserir novo lançamento.',
@@ -138,7 +137,37 @@ class FormLancamento extends StatelessWidget {
               ),
             ),
           ])),
+    );
+  }
+}
 
+class CamposForm extends StatelessWidget {
+  final TextEditingController controlador;
+  final String rotulo;
+  final String dica;
+  final IconData icone;
+  final TextInputType tipoTeclado;
+
+  CamposForm(
+      {this.controlador,
+      this.rotulo,
+      this.dica,
+      this.icone,
+      this.tipoTeclado,});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controlador,
+      style: TextStyle(
+        fontSize: 24.0,
+      ),
+      decoration: InputDecoration(
+        icon: Icon(icone),
+        labelText: rotulo,
+        hintText: dica,
+      ),
+      keyboardType: TextInputType.text,
     );
   }
 }
