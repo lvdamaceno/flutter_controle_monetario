@@ -2,7 +2,6 @@
 
 // This sample shows an [AppBar] with two simple actions. The first action
 // opens a [SnackBar], while the second action navigates to a new page.
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(to_liso_app());
@@ -35,10 +34,15 @@ class ListaLancamento extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.push(
+          final Future<Lancamento> future = Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FormLancamento()),
-          );
+            MaterialPageRoute(builder: (context) {
+              return FormLancamento();
+            }),);
+          future.then((lancamento) {
+            debugPrint('chegou no then do future');
+            debugPrint('$lancamento');
+          });
         },
       ),
     );
@@ -114,20 +118,7 @@ class FormLancamento extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                final double valor =
-                    double.tryParse(_contraladorCampoValor.text);
-                final String categoria = _controladorCampoCategoria.text;
-                final Lancamento lancamento = new Lancamento(valor, categoria);
-                if (valor != null && categoria.isNotEmpty) {
-                  debugPrint("Lançamento inserido");
-                  debugPrint("$lancamento");
-                } else {
-                  debugPrint('Campo não preenchido');
-                  /*
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text('Preencha os dois campos!')));
-                  */
-                }
+                CriarLancamento(context);
               },
               child: Text(
                 'Inserir novo lançamento.',
@@ -139,6 +130,19 @@ class FormLancamento extends StatelessWidget {
           ])),
     );
   }
+
+  void CriarLancamento(BuildContext context) {
+    final double valor = double.tryParse(_contraladorCampoValor.text);
+    final String categoria = _controladorCampoCategoria.text;
+    final Lancamento lancamento = new Lancamento(valor, categoria);
+    if (valor != null && categoria.isNotEmpty) {
+      debugPrint("Lançamento inserido");
+      debugPrint("$lancamento");
+      Navigator.pop(context, lancamento);
+    } else {
+      debugPrint('Campo não preenchido');
+    }
+  }
 }
 
 class CamposForm extends StatelessWidget {
@@ -148,12 +152,13 @@ class CamposForm extends StatelessWidget {
   final IconData icone;
   final TextInputType tipoTeclado;
 
-  CamposForm(
-      {this.controlador,
-      this.rotulo,
-      this.dica,
-      this.icone,
-      this.tipoTeclado,});
+  CamposForm({
+    this.controlador,
+    this.rotulo,
+    this.dica,
+    this.icone,
+    this.tipoTeclado,
+  });
 
   @override
   Widget build(BuildContext context) {
