@@ -14,23 +14,30 @@ class to_liso_app extends StatelessWidget {
   }
 }
 
-class ListaLancamento extends StatelessWidget {
+class ListaLancamento extends StatefulWidget {
+  final List<Lancamento> _listaLancamentos = List();
+  @override
+  _ListaLancamentoState createState() => _ListaLancamentoState();
+}
+
+class _ListaLancamentoState extends State<ListaLancamento> {
+
+
   @override
   Widget build(BuildContext context) {
+//    _listaLancamentos.add(Lancamento(-100, 'Teste'));
+//    _listaLancamentos.add(Lancamento(100, 'Teste'));
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("Minhas Dívidas"),
         centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          ItemLancamento(new Lancamento(100, 'Rendimento')),
-          ItemLancamento(new Lancamento(-120, 'Farmácia')),
-          ItemLancamento(new Lancamento(-150, 'Almoço')),
-          ItemLancamento(new Lancamento(200, 'Rendimento')),
-        ],
-      ),
+      body: ListView.builder(
+          itemCount: widget._listaLancamentos.length, itemBuilder: (context, index) {
+        final lancamento = widget._listaLancamentos[index];
+        return ItemLancamento(lancamento);
+      }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -38,10 +45,18 @@ class ListaLancamento extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) {
               return FormLancamento();
-            }),);
+            }),
+          );
           future.then((lancamento) {
-            debugPrint('chegou no then do future');
-            debugPrint('$lancamento');
+            Future.delayed(Duration(milliseconds: 30), (){
+              debugPrint('chegou no then do future');
+              debugPrint('$lancamento');
+              if (lancamento != null){
+                setState(() {
+                  widget._listaLancamentos.add(lancamento);
+                });
+              }
+            });
           });
         },
       ),
@@ -90,7 +105,7 @@ class Lancamento {
 class FormLancamento extends StatelessWidget {
   final TextEditingController _contraladorCampoValor = TextEditingController();
   final TextEditingController _controladorCampoCategoria =
-      TextEditingController();
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
