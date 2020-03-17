@@ -6,6 +6,7 @@ class Editor extends StatelessWidget {
   final String dica;
   final IconData icone;
   final TextInputType tipoTeclado;
+  final Function validador;
 
   Editor({
     this.controlador,
@@ -13,6 +14,7 @@ class Editor extends StatelessWidget {
     this.dica,
     this.icone,
     this.tipoTeclado,
+    this.validador,
   });
 
   @override
@@ -23,11 +25,12 @@ class Editor extends StatelessWidget {
         fontSize: 24.0,
       ),
       decoration: InputDecoration(
-        icon: Icon(icone),
+        icon: icone != null ? Icon(icone) : null,
         labelText: rotulo,
         hintText: dica,
       ),
-      keyboardType: TextInputType.text,
+      keyboardType: tipoTeclado ?? TextInputType.text,
+      validator: validador,
     );
   }
 }

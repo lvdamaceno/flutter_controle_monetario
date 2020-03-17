@@ -11,6 +11,7 @@ class ToLisoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(home: ListaLancamento());
+    return MaterialApp(
+        debugShowCheckedModeBanner: false, home: ListaLancamento());
   }
 }

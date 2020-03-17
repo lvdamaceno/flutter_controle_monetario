@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_liso/components/editor.dart';
 import 'package:to_liso/models/lancamento.dart';
+import 'package:to_liso/screens/lancamento/validacoes.dart';
 
 const _tituloAppBar = 'Novo Lançamento';
 const _rotuloCampoValor = 'Valor';
@@ -16,9 +17,11 @@ class FormLancamento extends StatefulWidget {
 
 class _FormLancamentoState extends State<FormLancamento> {
   final TextEditingController _contraladorCampoValor = TextEditingController();
-
   final TextEditingController _controladorCampoCategoria =
       TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  List<String> _categorias = ['Uber', 'Netflix', 'Almoço', 'Spotify']; // Option 2
+  String _selectedCategorias; // Option 2
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +30,45 @@ class _FormLancamentoState extends State<FormLancamento> {
         title: Text(_tituloAppBar),
         centerTitle: true,
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(16.00),
-          child: Column(children: <Widget>[
-            Editor(
-              rotulo: _rotuloCampocategoria,
-              dica: _dicaCampoCategoria,
-              icone: Icons.create,
-              tipoTeclado: TextInputType.text,
-              controlador: _controladorCampoCategoria,
-            ),
-            Editor(
-              rotulo: _rotuloCampoValor,
-              dica: _dicaCampoValor,
-              icone: Icons.monetization_on,
-              tipoTeclado: TextInputType.text,
-              controlador: _contraladorCampoValor,
-            ),
-            RaisedButton(
-              onPressed: () {
-                _criarLancamento(context);
-              },
-              child: Text(
-                _rotuloBotaoInserir,
-                style: TextStyle(
-                  fontSize: 24.0,
+      body: Form(
+        key: _formKey,
+        autovalidate: true,
+        child: SingleChildScrollView(
+            padding: EdgeInsets.all(16.0),
+            child: Column(children: <Widget>[
+
+              Editor(
+                rotulo: _rotuloCampocategoria,
+                dica: _dicaCampoCategoria,
+                icone: Icons.create,
+                tipoTeclado: TextInputType.text,
+                controlador: _controladorCampoCategoria,
+                validador: ValidaLancamento.categoria,
+              ),
+
+              Editor(
+                rotulo: _rotuloCampoValor,
+                dica: _dicaCampoValor,
+                icone: Icons.monetization_on,
+                tipoTeclado: TextInputType.text,
+                controlador: _contraladorCampoValor,
+                validador: ValidaLancamento.valor,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _criarLancamento(context);
+                  }
+                },
+                child: Text(
+                  _rotuloBotaoInserir,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                  ),
                 ),
               ),
-            ),
-          ])),
+            ])),
+      ),
     );
   }
 
