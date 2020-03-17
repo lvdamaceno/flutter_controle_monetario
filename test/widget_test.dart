@@ -13,7 +13,7 @@ import 'package:to_liso/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(to_liso_app());
+    await tester.pumpWidget(ToLisoApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

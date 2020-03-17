@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:to_liso/models/lancamento.dart';
 import 'package:to_liso/screens/lancamento/formulario.dart';
 
+const _tituloAppBar = 'Controle Financeiro';
+
 class ListaLancamento extends StatefulWidget {
   final List<Lancamento> _listaLancamentos = List();
 
@@ -15,7 +17,7 @@ class _ListaLancamentoState extends State<ListaLancamento> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Minhas Dívidas"),
+        title: Text(_tituloAppBar),
         centerTitle: true,
       ),
       body: ListView.builder(

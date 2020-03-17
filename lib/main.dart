@@ -5,9 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:to_liso/screens/lancamento/lista.dart';
 
-void main() => runApp(to_liso_app());
+void main() => runApp(ToLisoApp());
 
-class to_liso_app extends StatelessWidget {
+class ToLisoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
