@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:to_liso/components/editor.dart';
+import 'package:to_liso/components/seletor.dart';
 import 'package:to_liso/models/lancamento.dart';
 import 'package:to_liso/screens/lancamento/validacoes.dart';
 
 const _tituloAppBar = 'Novo Lançamento';
 const _rotuloCampoValor = 'Valor';
 const _dicaCampoValor = '0.00';
-const _rotuloCampocategoria = 'Categoria';
+const _rotuloCampoCategoria = 'Categoria';
+const List<String> _listaCategorias = ['Aluguel', 'Alimentação', 'Transporte'];
 const _dicaCampoCategoria = 'Exemplo: Alimentação';
 const _rotuloBotaoInserir = 'Inserir novo lançamento';
 
 class FormLancamento extends StatefulWidget {
+
   @override
   _FormLancamentoState createState() => _FormLancamentoState();
 }
 
 class _FormLancamentoState extends State<FormLancamento> {
   final TextEditingController _contraladorCampoValor = TextEditingController();
-  final TextEditingController _controladorCampoCategoria =
-      TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
-  List<String> _categorias = ['Uber', 'Netflix', 'Almoço', 'Spotify']; // Option 2
-  String _selectedCategorias; // Option 2
+
+  bool _autovalidate = false;
+  String _controladorListaCategoria = _listaCategorias[0];
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +39,17 @@ class _FormLancamentoState extends State<FormLancamento> {
         child: SingleChildScrollView(
             padding: EdgeInsets.all(16.0),
             child: Column(children: <Widget>[
-
-              Editor(
-                rotulo: _rotuloCampocategoria,
+              Seletor(
+                controlador: (String value) {
+                  setState(() {
+                    _controladorListaCategoria = value;
+                  });
+                },
+                lista: _listaCategorias,
                 dica: _dicaCampoCategoria,
-                icone: Icons.create,
-                tipoTeclado: TextInputType.text,
-                controlador: _controladorCampoCategoria,
+                rotulo: _rotuloCampoCategoria,
                 validador: ValidaLancamento.categoria,
               ),
-
               Editor(
                 rotulo: _rotuloCampoValor,
                 dica: _dicaCampoValor,
@@ -74,7 +78,7 @@ class _FormLancamentoState extends State<FormLancamento> {
 
   void _criarLancamento(BuildContext context) {
     final double valor = double.tryParse(_contraladorCampoValor.text);
-    final String categoria = _controladorCampoCategoria.text;
+    final String categoria = _controladorListaCategoria;
     final Lancamento lancamento = new Lancamento(valor, categoria);
     if (valor != null && categoria.isNotEmpty) {
       Navigator.pop(context, lancamento);
